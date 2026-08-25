@@ -1,0 +1,93 @@
+/* Signal design tokens — the single source of visual truth. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root,
+:root[data-theme="dark"] {
+  /* Surfaces (graphite ramp) */
+  --bg-base: #0b0d10;
+  --bg-sunken: #08090b;
+  --surface-1: #111418;
+  --surface-2: #161a1f;
+  --surface-3: #1c2127;
+
+  /* Borders */
+  --border-subtle: #23282f;
+  --border-strong: #333a43;
+
+  /* Text */
+  --text-primary: #e6eaef;
+  --text-secondary: #a3acb9;
+  --text-muted: #6b7480;
+  --text-faint: #464e58;
+
+  /* Signal accent */
+  --accent: #3dd6c4;
+  --accent-hover: #57e0d0;
+  --accent-pressed: #2fb8a8;
+  --accent-wash: rgba(61, 214, 196, 0.1);
+  --accent-ink: #06110f; /* text on accent buttons */
+
+  /* Feedback */
+  --success: #46c08d;
+  --warning: #e0a93b;
+  --danger: #e5674e;
+  --info: #5b9dff;
+
+  /* Stage hues (paired always with icon + label — never color-only) */
+  --stage-not-started: #6b7480;
+  --stage-learning: #5b9dff;
+  --stage-practicing: #b98bff;
+  --stage-building: #f2a65a;
+  --stage-reviewing: #e6c84a;
+  --stage-completed: #3dd6c4;
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  /* Spacing (8px rhythm) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 999px;
+
+  /* Elevation — reserved for dialogs/menus only */
+  --shadow-overlay: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  /* Layout */
+  --sidebar-expanded: 256px;
+  --sidebar-collapsed: 64px;
+  --content-max: 1280px;
+
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 240ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+:root[data-theme="light"] {
+  --bg-base: #f7f8fa;
+  --bg-sunken: #eef1f4;
+  --surface-1: #ffffff;
+  --surface-2: #f2f4f7;
+  --surface-3: #e9edf1;
+  --border-subtle: #e3e7ec;
+  --border-strong: #cfd6de;
+  --text-primary: #1a1d21;
+  --text-secondary: #47505b;
+  --text-muted: #6b7480;
+  --text-faint: #99a2ad;
+  --accent-ink: #06110f;
+  --accent-wash: rgba(47, 184, 168, 0.12);
+}

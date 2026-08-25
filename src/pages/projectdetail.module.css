@@ -1,0 +1,124 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.desc {
+  color: var(--text-secondary);
+  max-width: 72ch;
+}
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 420px;
+}
+.linksRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-5);
+  align-items: start;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.deliverables {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+}
+.deliverables li {
+  padding-left: var(--space-4);
+  position: relative;
+}
+.deliverables li::before {
+  content: "▪";
+  position: absolute;
+  left: var(--space-1);
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  top: 0.2em;
+}
+
+/* Sticky single action */
+.sticky {
+  position: sticky;
+  bottom: var(--space-4);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-overlay);
+}
+.stickyContext {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.stickyName {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.done {
+  color: var(--stage-completed);
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 720px) {
+  .sticky {
+    position: fixed;
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+  }
+  .page {
+    padding-bottom: 72px;
+  }
+  .sticky :global(.sg-btn) {
+    flex-shrink: 0;
+  }
+}

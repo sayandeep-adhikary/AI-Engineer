@@ -1,0 +1,113 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.optionalRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+.optionalBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.optionalBar :global(.sg-progress) {
+  flex: 1;
+}
+
+/* ── Category list ───────────────────────────────────────────────────────── */
+.catList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.catRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px 42px;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+.catCurrent {
+  background: var(--accent-wash);
+}
+.catName {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.catCurrent .catName {
+  color: var(--text-primary);
+}
+.catDot {
+  color: var(--accent);
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+.catOpt {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+.catPct {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.viewAll {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.viewAll:hover {
+  color: var(--accent-hover);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .catRow {
+    grid-template-columns: minmax(0, 1fr) 80px 38px;
+  }
+}

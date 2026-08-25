@@ -1,0 +1,193 @@
+.greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* ── Hero (Next Best Action) ─────────────────────────────────────────────── */
+.hero {
+  border-color: var(--border-strong);
+}
+.heroBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.heroTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.heroTitle:hover {
+  color: var(--accent);
+}
+.heroContext {
+  color: var(--text-secondary);
+  margin-top: calc(-1 * var(--space-2));
+}
+.actionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+.actionText {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.railWrap {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ── Grids ───────────────────────────────────────────────────────────────── */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+.momentum {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+/* ── Lists ───────────────────────────────────────────────────────────────── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.listRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: background var(--dur-fast) var(--ease);
+}
+.listRow:hover {
+  background: var(--surface-2);
+  border-color: var(--border-subtle);
+}
+.listMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.listTitle {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* ── Timeline (changelog) ────────────────────────────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+.timelineRow {
+  display: grid;
+  grid-template-columns: 68px 18px 1fr;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.timelineRow:last-child {
+  border-bottom: none;
+}
+.timelineTime {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+}
+.timelineGlyph {
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+.timelineText {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* ── Core path (de-emphasized) ───────────────────────────────────────────── */
+.corePanel {
+  background: var(--surface-1);
+}
+.coreBody {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+.coreItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.coreLine {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.coreLine :global(.sg-progress) {
+  flex: 1;
+}
+.coreDivider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-subtle);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+  .coreBody {
+    grid-template-columns: 1fr;
+  }
+  .coreDivider {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .momentum {
+    grid-template-columns: 1fr 1fr;
+  }
+  .heroActions {
+    flex-direction: column;
+  }
+  .heroActions > * {
+    width: 100%;
+  }
+  .heroActions :global(.sg-btn) {
+    width: 100%;
+  }
+}

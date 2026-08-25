@@ -1,0 +1,21 @@
+.track {
+  font-weight: 600;
+}
+/* Track border language: solid / hairline / dashed — decodable without color. */
+.track_core {
+  border-color: var(--border-strong);
+  color: var(--accent);
+}
+.track_useful {
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+}
+.track_optional_depth {
+  border-style: dashed;
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+}
+
+.mode {
+  color: var(--text-secondary);
+}

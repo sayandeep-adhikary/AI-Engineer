@@ -1,0 +1,106 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+/* Status is structurally distinguishable (border/edge), not color alone. */
+.status_planned {
+  border-style: solid;
+  border-color: var(--border-subtle);
+}
+.status_in_progress {
+  border-color: var(--border-strong);
+}
+.status_completed {
+  border-color: var(--border-strong);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+/* Optional-depth: deliberate branch, never "broken". */
+.optional {
+  border-style: dashed;
+  border-color: var(--border-subtle);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.pnum {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.trackSlot {
+  margin-left: auto;
+}
+.title {
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+.title a {
+  color: var(--text-primary);
+}
+.title a:hover {
+  color: var(--accent);
+}
+.desc {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.tech {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.link:hover {
+  color: var(--accent-hover);
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+.openLink {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--accent);
+}
+.openLink:hover {
+  color: var(--accent-hover);
+}
+
+/* Gallery variant — portfolio emphasis. */
+.gallery {
+  min-height: 100%;
+}
+.gallery .title {
+  font-size: 1.2rem;
+}

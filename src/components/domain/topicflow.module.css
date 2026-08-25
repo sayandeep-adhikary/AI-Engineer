@@ -1,0 +1,208 @@
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Stage section ───────────────────────────────────────────────────────── */
+.stage {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+.stage.future {
+  border-color: var(--border-subtle);
+  opacity: 0.82;
+}
+.stage.current {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-wash);
+}
+
+.stageHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text-primary);
+}
+.stageHeader:hover {
+  background: var(--surface-2);
+}
+.stageChevron {
+  width: 14px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+.stageTick {
+  font-size: 0.85rem;
+}
+.stageName {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.stageCount {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.stagePill {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  color: var(--accent-ink);
+  background: var(--accent);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Units ───────────────────────────────────────────────────────────────── */
+.units {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--space-4) var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-3);
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.currentUnit {
+  border-color: var(--accent);
+  background: var(--surface-2);
+  box-shadow: 0 0 0 2px var(--accent-wash);
+}
+.completedUnit .unitTitle {
+  color: var(--text-secondary);
+}
+
+.unitTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.unitToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  min-height: 32px;
+}
+.unitStatus {
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.unitTitle {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.nextTag {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent-ink);
+  background: var(--accent);
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.unitAction {
+  flex-shrink: 0;
+}
+
+/* Restrained completion acknowledgment — a brief accent ring, no confetti. */
+.justCompleted {
+  animation: unitAck 0.9s var(--ease);
+}
+@keyframes unitAck {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent-wash);
+  }
+  35% {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--stage-completed) 40%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .justCompleted {
+    animation: none;
+  }
+}
+
+.unitMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-left: calc(0.8rem + var(--space-2));
+}
+
+.unitDetail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  margin-top: var(--space-1);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+.unitDesc {
+  color: var(--text-secondary);
+}
+.unitBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.unitBlock p {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+/* ── Completed terminal ──────────────────────────────────────────────────── */
+.completedBody {
+  padding: 0 var(--space-4) var(--space-4);
+}
+.completedNote {
+  color: var(--stage-completed);
+  font-weight: 500;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .unitTop {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .unitAction :global(.sg-btn) {
+    width: 100%;
+  }
+}
