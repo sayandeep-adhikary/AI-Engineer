@@ -1,5 +1,5 @@
 // Cloud progress persistence — the ONLY module that reads/writes the user's
-// progress document in Firestore. The rest of Signal goes through syncStore.
+// progress document in Firestore. The rest of Epoch goes through syncStore.
 //
 // Schema:  users/{uid}/progress/current
 //   { schemaVersion, progressVersion, progress: UserProgress, updatedAt }

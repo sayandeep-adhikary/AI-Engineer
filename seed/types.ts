@@ -1,4 +1,4 @@
-// Signal — AI Engineer Learning Dashboard
+// Epoch — AI Engineer Learning Dashboard
 // Curriculum definition schema (CURRICULUM data only — no user progress state).
 //
 // Design rules encoded here:

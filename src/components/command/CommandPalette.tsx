@@ -1,11 +1,11 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
-import type { SignalCommand } from "./commands";
+import type { EpochCommand } from "./commands";
 import { searchCommands } from "./commands";
 import styles from "./commandpalette.module.css";
 
 interface CommandPaletteProps {
-  commands: readonly SignalCommand[];
+  commands: readonly EpochCommand[];
   onClose: () => void;
 }
 
@@ -36,7 +36,7 @@ export function CommandPalette({ commands, onClose }: CommandPaletteProps) {
     document.getElementById(`${listId}-option-${selectedIndex}`)?.scrollIntoView({ block: "nearest" });
   }, [listId, selectedIndex]);
 
-  const execute = (command: SignalCommand) => {
+  const execute = (command: EpochCommand) => {
     onClose();
     command.action();
   };
@@ -79,7 +79,7 @@ export function CommandPalette({ commands, onClose }: CommandPaletteProps) {
     }
   };
 
-  const renderResults = (items: readonly SignalCommand[], heading: string) => (
+  const renderResults = (items: readonly EpochCommand[], heading: string) => (
     <section key={heading} className={styles.group} role="group" aria-labelledby={`${listId}-${heading}`}>
       <h2 id={`${listId}-${heading}`} className={styles.groupLabel}>{heading}</h2>
       {items.map((command) => {
@@ -117,7 +117,7 @@ export function CommandPalette({ commands, onClose }: CommandPaletteProps) {
         className={styles.dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Signal command palette"
+        aria-label="Epoch command palette"
         onMouseDown={(event) => event.stopPropagation()}
         onKeyDown={handleKeyDown}
       >

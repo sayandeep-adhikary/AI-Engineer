@@ -3,7 +3,7 @@ import { PROGRESS_VERSION, type UserProgress } from "@/state/types";
 // User-progress JSON export/import. Curriculum/seed data is NEVER exported or
 // imported — only the mutable UserProgress domain model.
 
-export const EXPORT_FORMAT = "signal.progress" as const;
+export const EXPORT_FORMAT = "epoch.progress" as const;
 export const EXPORT_FORMAT_VERSION = 1 as const;
 
 export interface ProgressExport {
@@ -86,7 +86,7 @@ export function validateImportedProgress(raw: unknown): ValidationResult {
     ARRAY_FIELDS.some((f) => f in src) ||
     "settings" in src;
   if (!looksLikeProgress) {
-    return { ok: false, error: "This file does not look like a Signal progress export." };
+    return { ok: false, error: "This file does not look like an Epoch progress export." };
   }
 
   for (const f of RECORD_FIELDS) {

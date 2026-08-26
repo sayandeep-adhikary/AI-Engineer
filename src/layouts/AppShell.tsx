@@ -103,7 +103,7 @@ export function AppShell() {
           <span className={styles.mark} aria-hidden="true">
             ◆
           </span>
-          {!collapsed && <span className={styles.wordmark}>Signal</span>}
+          {!collapsed && <span className={styles.wordmark}>Epoch</span>}
           <button
             className={styles.collapseBtn}
             onClick={() => setCollapsed((c) => !c)}
@@ -190,12 +190,13 @@ export function AppShell() {
             key={item.to}
             to={item.to}
             end={item.end}
+            aria-label={item.label}
+            title={item.label}
             className={({ isActive }) => `${styles.tab} ${isActive ? styles.tabActive : ""}`}
           >
             <span className={styles.tabGlyph} aria-hidden="true">
               {item.glyph}
             </span>
-            <span className={styles.tabLabel}>{item.label}</span>
           </NavLink>
         ))}
         <button
@@ -203,11 +204,12 @@ export function AppShell() {
           onClick={() => setMoreOpen(true)}
           aria-haspopup="dialog"
           aria-expanded={moreOpen}
+          aria-label="More"
+          title="More"
         >
           <span className={styles.tabGlyph} aria-hidden="true">
             ⋯
           </span>
-          <span className={styles.tabLabel}>More</span>
         </button>
       </nav>
 
@@ -222,6 +224,9 @@ export function AppShell() {
         >
           <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
             <div className={styles.sheetHandle} aria-hidden="true" />
+            <div className={styles.sheetAccount}>
+              <AuthMenu />
+            </div>
             <button
               type="button"
               className={styles.sheetItem}
@@ -243,9 +248,6 @@ export function AppShell() {
                 {item.label}
               </NavLink>
             ))}
-            <div className={styles.sheetAuth}>
-              <AuthMenu />
-            </div>
           </div>
         </div>
       )}

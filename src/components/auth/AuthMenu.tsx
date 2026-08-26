@@ -52,7 +52,7 @@ export function AuthMenu({ collapsed = false }: AuthMenuProps) {
     );
   }
 
-  // Firebase not configured — Signal runs locally, so we surface an honest badge.
+  // Firebase not configured — Epoch runs locally, so we surface an honest badge.
   if (!configured) {
     return (
       <div className={`${styles.root} ${styles.muted}`} title="Cloud sync unavailable — running locally">

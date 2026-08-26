@@ -24,7 +24,7 @@ function readConfig(): FirebaseConfig | null {
   const missing = REQUIRED_KEYS.filter((key) => !env[key] || String(env[key]).trim() === "");
   if (missing.length > 0) {
     if (import.meta.env.DEV) {
-      // Not an error — Signal runs fully in local mode without Firebase.
+      // Not an error — Epoch runs fully in local mode without Firebase.
       console.info(
         `[firebase] Cloud features disabled — missing env: ${missing.join(", ")}. ` +
           "Copy .env.example to .env to enable authentication."

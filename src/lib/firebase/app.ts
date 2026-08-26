@@ -13,5 +13,5 @@ function resolveApp(): FirebaseApp | null {
   }
 }
 
-/** The initialized Firebase app, or null when Signal is running in local mode. */
+/** The initialized Firebase app, or null when Epoch is running in local mode. */
 export const firebaseApp: FirebaseApp | null = resolveApp();

@@ -8,7 +8,7 @@ export function NotFoundPage() {
       <h1>Not found</h1>
       <EmptyState
         title="This route doesn't exist"
-        description="The page you're looking for isn't part of Signal."
+        description="The page you're looking for isn't part of Epoch."
         icon={<span style={{ fontSize: "1.5rem", color: "var(--text-faint)" }}>○</span>}
         action={
           <Link to="/">

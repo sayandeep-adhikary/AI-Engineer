@@ -126,7 +126,7 @@ export function SettingsPage() {
         <div className={styles.row}>
           <div className="stack" style={{ gap: 2 }}>
             <span className="text-secondary">Interface theme</span>
-            <span className="caption">Dark is the primary Signal experience.</span>
+            <span className="caption">Dark is the primary Epoch experience.</span>
           </div>
           <SegmentedControl<Theme>
             options={[

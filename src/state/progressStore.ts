@@ -269,7 +269,7 @@ export const useProgressStore = create<ProgressStore>()(
       },
     }),
     {
-      name: "signal.progress.v1",
+      name: "epoch.progress.v1",
       version: PROGRESS_VERSION,
       storage: createPersistStorage<UserProgress>(),
       // Persist only serializable progress data, never the action functions.

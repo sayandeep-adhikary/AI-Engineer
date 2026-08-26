@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Signal Firestore security rules.
+// Epoch Firestore security rules.
 // Principle: a signed-in user may read and write ONLY their own user document.
 // There are no public documents and no open access.
 service cloud.firestore {

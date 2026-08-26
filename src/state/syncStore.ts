@@ -228,7 +228,7 @@ export const useSyncStore = create<SyncState>((set, get) => {
     if (result.kind === "unsupported") {
       set({
         status: "error",
-        error: `Cloud data uses a newer format (v${result.schemaVersion}). Update Signal to sync.`,
+        error: `Cloud data uses a newer format (v${result.schemaVersion}). Update Epoch to sync.`,
       });
       return; // do not overwrite forward-written data
     }
@@ -375,7 +375,7 @@ export const useSyncStore = create<SyncState>((set, get) => {
 // DEV-only diagnostics for verifying the pure decision logic in the browser.
 declare global {
   interface Window {
-    __signalSync?: {
+    __epochSync?: {
       hasProgress: typeof hasProgress;
       progressEqual: typeof progressEqual;
       decideFirstLogin: typeof decideFirstLogin;
@@ -386,7 +386,7 @@ declare global {
   }
 }
 if (import.meta.env.DEV && typeof window !== "undefined") {
-  window.__signalSync = {
+  window.__epochSync = {
     hasProgress,
     progressEqual,
     decideFirstLogin,

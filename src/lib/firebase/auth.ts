@@ -1,4 +1,4 @@
-// Auth service boundary. The rest of Signal talks to these functions, never to
+// Auth service boundary. The rest of Epoch talks to these functions, never to
 // the Firebase Auth SDK directly. Google Sign-In is the only provider: it is the
 // least code for a premium single-user tool (no password/reset/verification UI).
 import {

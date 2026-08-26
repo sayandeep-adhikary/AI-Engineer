@@ -228,7 +228,7 @@ function ActiveProject() {
     return (
       <EmptyState
         title="No active project"
-        description="Projects are the parallel spine of Signal. Start one to track your build."
+        description="Projects are the parallel spine of Epoch. Start one to track your build."
         icon={<span style={{ fontSize: "1.25rem", color: "var(--text-faint)" }}>◼</span>}
       />
     );

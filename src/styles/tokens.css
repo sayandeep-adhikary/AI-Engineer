@@ -1,4 +1,4 @@
-/* Signal design tokens — the single source of visual truth. */
+/* Epoch design tokens — the single source of visual truth. */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root,
@@ -20,7 +20,7 @@
   --text-muted: #6b7480;
   --text-faint: #464e58;
 
-  /* Signal accent */
+  /* Epoch accent */
   --accent: #3dd6c4;
   --accent-hover: #57e0d0;
   --accent-pressed: #2fb8a8;

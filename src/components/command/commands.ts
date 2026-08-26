@@ -4,7 +4,7 @@ import { allLabs } from "@/lib/selectors";
 
 export type CommandGroup = "Navigation" | "Actions" | "Categories" | "Topics" | "Projects" | "Labs";
 
-export interface SignalCommand {
+export interface EpochCommand {
   id: string;
   label: string;
   description: string;
@@ -36,7 +36,7 @@ const navigation = (
   target: string,
   glyph: string,
   keywords: readonly string[] = []
-): Omit<SignalCommand, "action" | "navigationTarget"> & { navigationTarget: string } => ({
+): Omit<EpochCommand, "action" | "navigationTarget"> & { navigationTarget: string } => ({
   id,
   label,
   description,
@@ -47,7 +47,7 @@ const navigation = (
   defaultVisible: true,
 });
 
-export function createCommands({ navigate, theme, setTheme, auth }: CommandContext): SignalCommand[] {
+export function createCommands({ navigate, theme, setTheme, auth }: CommandContext): EpochCommand[] {
   const base = [
     navigation("nav-dashboard", "Dashboard", "Return to your learning overview", "/", "◎", ["home", "overview"]),
     navigation("nav-roadmap", "Roadmap", "Explore the complete learning path", "/roadmap", "⌗", ["path", "curriculum"]),
@@ -59,11 +59,11 @@ export function createCommands({ navigate, theme, setTheme, auth }: CommandConte
   ].map((command) => ({ ...command, action: () => navigate(command.navigationTarget) }));
 
   const nextTheme = theme === "dark" ? "light" : "dark";
-  const actions: SignalCommand[] = [
+  const actions: EpochCommand[] = [
     {
       id: "action-theme",
       label: `Switch to ${nextTheme} theme`,
-      description: `Use Signal's ${nextTheme} appearance`,
+      description: `Use Epoch's ${nextTheme} appearance`,
       keywords: ["theme", "toggle", "appearance", "dark", "light"],
       glyph: nextTheme === "light" ? "○" : "◐",
       group: "Actions",
@@ -89,7 +89,7 @@ export function createCommands({ navigate, theme, setTheme, auth }: CommandConte
       actions.push({
         id: "action-sign-out",
         label: "Sign out",
-        description: "Sign out of your Signal account",
+        description: "Sign out of your Epoch account",
         keywords: ["logout", "log out", "account", "firebase"],
         glyph: "⇥",
         group: "Actions",
@@ -110,7 +110,7 @@ export function createCommands({ navigate, theme, setTheme, auth }: CommandConte
     }
   }
 
-  const categoryCommands: SignalCommand[] = categories.map((category) => ({
+  const categoryCommands: EpochCommand[] = categories.map((category) => ({
     id: `category-${category.id}`,
     label: category.title,
     description: category.description,
@@ -121,7 +121,7 @@ export function createCommands({ navigate, theme, setTheme, auth }: CommandConte
     action: () => navigate(`/roadmap/${category.id}`),
   }));
 
-  const topicCommands: SignalCommand[] = topics.map((topic) => ({
+  const topicCommands: EpochCommand[] = topics.map((topic) => ({
     id: `topic-${topic.id}`,
     label: topic.title,
     description: topic.shortDescription,
@@ -132,7 +132,7 @@ export function createCommands({ navigate, theme, setTheme, auth }: CommandConte
     action: () => navigate(`/roadmap/${topic.categoryId}/${topic.id}`),
   }));
 
-  const projectCommands: SignalCommand[] = projects.map((project) => ({
+  const projectCommands: EpochCommand[] = projects.map((project) => ({
     id: `project-${project.id}`,
     label: project.title,
     description: project.description,
@@ -143,7 +143,7 @@ export function createCommands({ navigate, theme, setTheme, auth }: CommandConte
     action: () => navigate(`/projects/${project.id}`),
   }));
 
-  const labCommands: SignalCommand[] = allLabs().map(({ unit, topic, category }) => ({
+  const labCommands: EpochCommand[] = allLabs().map(({ unit, topic, category }) => ({
     id: `lab-${unit.id}`,
     label: unit.title,
     description: `${topic.title} · ${category.title}`,
@@ -161,7 +161,7 @@ function normalize(value: string): string {
   return value.toLocaleLowerCase().trim().replace(/\s+/g, " ");
 }
 
-function rank(command: SignalCommand, query: string): number | null {
+function rank(command: EpochCommand, query: string): number | null {
   const label = normalize(command.label);
   const description = normalize(command.description);
   const keywords = command.keywords.map(normalize);
@@ -176,13 +176,13 @@ function rank(command: SignalCommand, query: string): number | null {
   return null;
 }
 
-export function searchCommands(commands: readonly SignalCommand[], rawQuery: string): SignalCommand[] {
+export function searchCommands(commands: readonly EpochCommand[], rawQuery: string): EpochCommand[] {
   const query = normalize(rawQuery);
   if (!query) return commands.filter((command) => command.defaultVisible);
 
   return commands
     .map((command, index) => ({ command, index, score: rank(command, query) }))
-    .filter((result): result is { command: SignalCommand; index: number; score: number } => result.score !== null)
+    .filter((result): result is { command: EpochCommand; index: number; score: number } => result.score !== null)
     .sort((a, b) => a.score - b.score || a.index - b.index)
     .slice(0, 40)
     .map(({ command }) => command);

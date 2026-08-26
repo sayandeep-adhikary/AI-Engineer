@@ -12,7 +12,7 @@ interface RequireAuthProps {
 
 /**
  * Auth guard for FUTURE protected routes. Intentionally NOT applied to any route
- * yet — Signal stays fully usable without signing in. It exists so a later
+ * yet — Epoch stays fully usable without signing in. It exists so a later
  * milestone can wrap authenticated-only surfaces without re-inventing the gate.
  */
 export function RequireAuth({ children, redirectTo = "/", fallback = null }: RequireAuthProps) {
