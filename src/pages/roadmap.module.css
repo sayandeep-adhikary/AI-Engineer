@@ -26,6 +26,10 @@
   grid-auto-columns: 240px;
   gap: var(--space-4);
   overflow-x: auto;
+  /* Horizontal-only scroll: pin the y-axis so the expanded card's halo / scroll-snap
+     never spawns a stray vertical scrollbar. Top padding keeps the 3px halo unclipped. */
+  overflow-y: hidden;
+  padding-top: 4px;
   padding-bottom: var(--space-3);
   scroll-snap-type: x proximity;
 }

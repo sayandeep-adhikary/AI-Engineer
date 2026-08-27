@@ -1,7 +1,7 @@
 // Dependency-free validator: reads the seed .ts files as TEXT and checks
 // referential integrity + hour sums without any TypeScript runtime or packages.
 // Run: node seed/validate-textual.mjs
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -64,9 +64,66 @@ for (const block of catBlocks) {
   }
 }
 
+// ── Rich content blocks (seed/content/**, lazy-loaded) ──────────────────────
+// Content is no longer imported into the main curriculum bundle, so it is
+// discovered and validated INDEPENDENTLY by walking the content directory.
+// Conservative, false-positive-free checks: known block types, no empty required
+// fields, and content keys that resolve to real unit ids. Deep semantic checks
+// (quiz answer range, step ordering) live in the typed validator seed/validate.ts
+// and additionally run in DEV when a topic's content loads.
+const KNOWN_BLOCK_TYPES = new Set([
+  "prose", "keyTerm", "code", "callout", "steps", "quiz", "checkpoint", "takeaways",
+]);
+const contentRoot = join(dir, "content");
+const walk = (d) => {
+  const out = [];
+  let entries;
+  try {
+    entries = readdirSync(d, { withFileTypes: true });
+  } catch {
+    return out;
+  }
+  for (const e of entries) {
+    const p = join(d, e.name);
+    if (e.isDirectory()) out.push(...walk(p));
+    else if (e.name.endsWith(".ts")) out.push(p);
+  }
+  return out;
+};
+const registryPath = join(contentRoot, "registry.ts");
+const contentFiles = walk(contentRoot).filter((p) => p !== registryPath);
+const rel = (p) => "content/" + p.slice(contentRoot.length + 1).replace(/\\/g, "/");
+
+for (const p of contentFiles) {
+  const text = readFileSync(p, "utf8");
+  const label = rel(p);
+  // Block openings look like `{ type: "prose"` — reliably distinct from code strings.
+  for (const m of text.matchAll(/\{\s*type:\s*"([^"]+)"/g)) {
+    if (!KNOWN_BLOCK_TYPES.has(m[1])) add("content-unknown-block", `${label}: unknown block type "${m[1]}"`);
+  }
+  // Required text fields must not be empty.
+  for (const m of text.matchAll(/\b(md|code|question|title|term|definition|action|explanation):\s*""/g)) {
+    add("content-empty-field", `${label}: empty required field "${m[1]}"`);
+  }
+  // Content record keys must reference defined unit ids.
+  for (const m of text.matchAll(/"(unit-[^"]+)":\s*[A-Za-z_[]/g)) {
+    if (!defined.has(m[1])) add("content-unit-ref", `${label}: content for undefined unit ${m[1]}`);
+  }
+}
+
+// Registry integrity: each registered topic must exist and point at a real module.
+if (existsSync(registryPath)) {
+  const regText = readFileSync(registryPath, "utf8");
+  for (const m of regText.matchAll(/"(topic-[^"]+)":\s*\(\)\s*=>\s*import\("([^"]+)"\)/g)) {
+    const [, topicId, importPath] = m;
+    if (!defined.has(topicId)) add("content-registry-topic", `registry.ts: registered topic not defined: ${topicId}`);
+    const resolved = join(contentRoot, importPath.replace(/^\.\//, "")) + ".ts";
+    if (!existsSync(resolved)) add("content-registry-file", `registry.ts: module not found for ${topicId}: ${importPath}`);
+  }
+}
+
 // Counts (informational)
-const count = (prefix) => [...defined].filter((d) => d.startsWith(prefix)).length;
-const stats = {
+const count = (prefix) => [...defined].filter((d) => d.startsWith(prefix)).length;const stats = {
   categories: count("category-"),
   topics: count("topic-"),
   units: count("unit-"),

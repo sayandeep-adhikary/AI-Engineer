@@ -4,6 +4,13 @@ import type {
   Stage,
   Track,
   UnitStage,
+  ContentBlock,
+} from "./types";
+import {
+  CONTENT_BLOCK_TYPES,
+  CODE_LANGUAGES,
+  CALLOUT_VARIANTS,
+  STEP_GUIDANCE,
 } from "./types";
 import { curriculum } from "./index";
 
@@ -18,6 +25,81 @@ const VALID_TRACKS: Track[] = ["core", "useful", "optional-depth"];
 export interface ValidationIssue {
   rule: string;
   message: string;
+}
+
+/**
+ * Structural + semantic validation for a unit's optional content blocks.
+ * Enforces: known block types, non-empty required fields, quiz answers that
+ * reference a real choice, valid code language, contiguous step ordering, and
+ * non-empty checkpoint/takeaway items.
+ */
+export function validateContentBlocks(
+  unitId: string,
+  blocks: ContentBlock[]
+): ValidationIssue[] {
+  const out: ValidationIssue[] = [];
+  const add = (message: string) => out.push({ rule: "content-block", message });
+  const nonEmpty = (v: unknown): v is string => typeof v === "string" && v.trim().length > 0;
+
+  blocks.forEach((block, i) => {
+    const at = `Unit ${unitId} block[${i}] (${(block as { type?: string }).type ?? "?"})`;
+    if (!(CONTENT_BLOCK_TYPES as readonly string[]).includes((block as { type: string }).type)) {
+      add(`${at}: unknown block type`);
+      return;
+    }
+    switch (block.type) {
+      case "prose":
+        if (!nonEmpty(block.md)) add(`${at}: empty md`);
+        break;
+      case "keyTerm":
+        if (block.terms.length === 0) add(`${at}: no terms`);
+        block.terms.forEach((t, j) => {
+          if (!nonEmpty(t.term)) add(`${at}.terms[${j}]: empty term`);
+          if (!nonEmpty(t.definition)) add(`${at}.terms[${j}]: empty definition`);
+        });
+        break;
+      case "code":
+        if (!CODE_LANGUAGES.includes(block.language)) add(`${at}: invalid language ${block.language}`);
+        if (!nonEmpty(block.code)) add(`${at}: empty code`);
+        break;
+      case "callout":
+        if (!CALLOUT_VARIANTS.includes(block.variant)) add(`${at}: invalid variant ${block.variant}`);
+        if (!nonEmpty(block.title)) add(`${at}: empty title`);
+        if (!nonEmpty(block.md)) add(`${at}: empty md`);
+        break;
+      case "steps":
+        if (!STEP_GUIDANCE.includes(block.guidance)) add(`${at}: invalid guidance ${block.guidance}`);
+        if (!nonEmpty(block.title)) add(`${at}: empty title`);
+        if (block.steps.length === 0) add(`${at}: no steps`);
+        block.steps.forEach((s, j) => {
+          if (s.order !== j + 1) add(`${at}.steps[${j}]: order ${s.order} not contiguous (expected ${j + 1})`);
+          if (!nonEmpty(s.action)) add(`${at}.steps[${j}]: empty action`);
+        });
+        break;
+      case "quiz":
+        if (!nonEmpty(block.question)) add(`${at}: empty question`);
+        if (block.choices.length < 2) add(`${at}: needs >= 2 choices`);
+        block.choices.forEach((c, j) => !nonEmpty(c) && add(`${at}.choices[${j}]: empty choice`));
+        if (
+          !Number.isInteger(block.answerIndex) ||
+          block.answerIndex < 0 ||
+          block.answerIndex >= block.choices.length
+        )
+          add(`${at}: answerIndex ${block.answerIndex} out of range 0..${block.choices.length - 1}`);
+        if (!nonEmpty(block.explanation)) add(`${at}: empty explanation`);
+        break;
+      case "checkpoint":
+        if (!nonEmpty(block.title)) add(`${at}: empty title`);
+        if (block.items.length === 0) add(`${at}: no items`);
+        block.items.forEach((it, j) => !nonEmpty(it) && add(`${at}.items[${j}]: empty item`));
+        break;
+      case "takeaways":
+        if (block.items.length === 0) add(`${at}: no items`);
+        block.items.forEach((it, j) => !nonEmpty(it) && add(`${at}.items[${j}]: empty item`));
+        break;
+    }
+  });
+  return out;
 }
 
 export function validateCurriculum(data: CurriculumDataset = curriculum): ValidationIssue[] {
@@ -89,6 +171,9 @@ export function validateCurriculum(data: CurriculumDataset = curriculum): Valida
     u.resourceIds.forEach((id) => !resourceIds.has(id) && add("unit-resource-ref", `Unit ${u.id} references missing resource ${id}`));
     u.recommendedAfterUnitIds.forEach((id) => !unitIds.has(id) && add("unit-recommendedafter-ref", `Unit ${u.id} recommendedAfter missing unit ${id}`));
     if (!listedUnitIds.has(u.id)) add("no-orphan-units", `Unit ${u.id} not listed by its topic`);
+    if (u.content) {
+      for (const issue of validateContentBlocks(u.id, u.content)) issues.push(issue);
+    }
   }
 
   // 5. Projects reference existing topics/milestones/skills; ordering correct

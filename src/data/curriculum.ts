@@ -35,6 +35,20 @@ export type {
   Track,
   Difficulty,
   DifficultyRange,
+  ContentBlock,
+  ProseBlock,
+  KeyTermBlock,
+  CodeBlock,
+  CalloutBlock,
+  StepsBlock,
+  GuidedStep,
+  QuizBlock,
+  CheckpointBlock,
+  TakeawaysBlock,
+  CodeLanguage,
+  CalloutVariant,
+  StepGuidance,
+  TopicContent,
 } from "@seed/index";
 
 export { curriculum, categories, topics, units, projects, milestones, skills, resources };

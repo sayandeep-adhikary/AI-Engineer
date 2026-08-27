@@ -1,0 +1,543 @@
+/* Rich lesson content — built entirely on Epoch design tokens so it reads as a
+   native part of the workspace, not a bolted-on course player. */
+
+.lesson {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── Markdown prose ──────────────────────────────────────────────────────── */
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.prose p {
+  margin: 0;
+}
+.prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.prose ul,
+.prose ol {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.inlineCode {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-3);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.mdCode {
+  margin: 0;
+  padding: var(--space-3);
+  overflow-x: auto;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* ── Key terms ───────────────────────────────────────────────────────────── */
+.terms {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.term {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) 1fr;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.term:first-child {
+  border-top: none;
+}
+.termName {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.termDef {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Code block ──────────────────────────────────────────────────────────── */
+.codeFigure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.codeCaption {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+.revealSolution {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  background: var(--surface-1);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+.revealSolution:hover {
+  border-color: var(--accent);
+  border-style: solid;
+}
+.codeShell {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-sunken);
+}
+.codeBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.codeLang {
+  color: var(--text-muted);
+}
+.copyBtn {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 3px var(--space-2);
+  cursor: pointer;
+}
+.copyBtn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+.codePre {
+  margin: 0;
+  padding: var(--space-3);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  -webkit-overflow-scrolling: touch;
+}
+.codeOutput {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--stage-completed);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.outputPre {
+  margin: 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ── Callout ─────────────────────────────────────────────────────────────── */
+.callout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.callout_gotcha {
+  border-left-color: var(--danger);
+}
+.callout_warning {
+  border-left-color: var(--warning);
+}
+.callout_tip {
+  border-left-color: var(--accent);
+}
+.callout_note {
+  border-left-color: var(--info);
+}
+.calloutHead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.calloutGlyph {
+  font-size: 0.9rem;
+}
+.callout_gotcha .calloutGlyph {
+  color: var(--danger);
+}
+.callout_warning .calloutGlyph {
+  color: var(--warning);
+}
+.callout_tip .calloutGlyph {
+  color: var(--accent);
+}
+.callout_note .calloutGlyph {
+  color: var(--info);
+}
+.calloutLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.calloutTitle {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+.calloutBody {
+  font-size: 0.875rem;
+}
+
+/* ── Guided / independent steps ──────────────────────────────────────────── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.stepsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stepsTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.stepsIntro {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.stepList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.step {
+  display: flex;
+  gap: var(--space-3);
+}
+.stepNum {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+.stepBody p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.stepAction {
+  color: var(--text-primary) !important;
+}
+.stepTag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  margin-right: var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--surface-3);
+  color: var(--text-muted);
+  vertical-align: middle;
+}
+.stepAction .stepTag {
+  background: var(--accent-wash);
+  color: var(--accent);
+}
+.stepDecision {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+}
+.revealBtn {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px var(--space-2);
+  cursor: pointer;
+}
+.revealBtn:hover {
+  border-color: var(--accent);
+}
+.stepExpected .stepTag {
+  color: var(--stage-completed);
+}
+.stepVerify .stepTag {
+  color: var(--info);
+}
+
+/* ── Quiz ────────────────────────────────────────────────────────────────── */
+.quiz {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.quizQ {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.quizQ .prose {
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+.quizChoices {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+.choice:hover {
+  border-color: var(--border-strong);
+}
+.choice input {
+  accent-color: var(--accent);
+}
+.choiceCorrect {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  color: var(--text-primary);
+}
+.choiceWrong {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--text-primary);
+}
+.choiceMark {
+  margin-left: auto;
+  font-weight: 600;
+}
+.choiceCorrect .choiceMark {
+  color: var(--success);
+}
+.choiceWrong .choiceMark {
+  color: var(--danger);
+}
+.quizActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.verdictOk {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--success);
+}
+.verdictNo {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--warning);
+}
+.explanation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+}
+.explanation .prose {
+  font-size: 0.875rem;
+}
+
+/* ── Checkpoint ──────────────────────────────────────────────────────────── */
+.checkpoint {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+}
+.checkpointHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.checkpointCount {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.checkpointTitle {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+.checkItems {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.checkItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.checkItem input {
+  margin-top: 3px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+.checkDone {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+.checkpointNote {
+  margin-top: var(--space-1);
+}
+
+/* ── Takeaways ───────────────────────────────────────────────────────────── */
+.takeaways {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--accent-wash);
+}
+.takeawayList {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .term {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+  .steps,
+  .quiz,
+  .checkpoint,
+  .takeaways {
+    padding: var(--space-3);
+  }
+}

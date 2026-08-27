@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import type { LearningMode } from "@/data/curriculum";
 import { categoryById, topicById, unitsForTopic } from "@/data/curriculum";
+import { hasTopicContent, loadTopicContent, type TopicContent } from "@/data/topicContent";
 import { useProgressStore } from "@/state/progressStore";
 import { currentActionableUnit, topicStage, unitState } from "@/lib/selectors";
 import { formatHours } from "@/lib/format";
@@ -35,6 +36,38 @@ export function TopicWorkspacePage() {
     () => MODE_ORDER.filter((m) => units.some((u) => u.mode === m)),
     [units]
   );
+
+  // Lazily load this topic's lesson content. `undefined` = still loading a
+  // content-bearing topic; `{}` = no content (fallback) / loaded-but-empty.
+  const topicHasContent = hasTopicContent(topicId);
+  const [contentByUnit, setContentByUnit] = useState<TopicContent | undefined>(undefined);
+  const [contentError, setContentError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setContentByUnit(undefined);
+    setContentError(false);
+    if (!hasTopicContent(topicId)) {
+      setContentByUnit({});
+      return;
+    }
+    loadTopicContent(topicId).then((res) => {
+      if (cancelled) return;
+      if (res.status === "ok") {
+        setContentByUnit(res.content);
+      } else if (res.status === "error") {
+        setContentByUnit({});
+        setContentError(true);
+      } else {
+        setContentByUnit({});
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [topicId]);
+
+  const contentPending = topicHasContent && contentByUnit === undefined;
 
   if (!category || !topic || topic.categoryId !== categoryId) {
     return <NotFoundPage />;
@@ -116,7 +149,14 @@ export function TopicWorkspacePage() {
           <h2 id="flow-heading" className="sr-only">
             Learning flow
           </h2>
-          <TopicUnitFlow topic={topic} progress={progress} focusUnitId={focusUnitId} />
+          <TopicUnitFlow
+            topic={topic}
+            progress={progress}
+            focusUnitId={focusUnitId}
+            contentByUnit={contentByUnit}
+            contentPending={contentPending}
+            contentError={contentError}
+          />
 
           {topic.commonMistakes.length > 0 && (
             <Panel overline="Common mistakes" title="Watch out for">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { LearningUnit, Stage, Topic } from "@/data/curriculum";
+import type { ContentBlock, LearningUnit, Stage, Topic } from "@/data/curriculum";
 import { unitsForTopic } from "@/data/curriculum";
+import type { TopicContent } from "@/data/topicContent";
 import { useProgressStore } from "@/state/progressStore";
 import type { UserProgress } from "@/state/types";
 import { currentActionableUnit, topicStage, unitState } from "@/lib/selectors";
@@ -8,6 +9,7 @@ import { formatMinutes } from "@/lib/format";
 import { MODE_META, STAGE_META, STAGE_ORDER } from "./meta";
 import { DifficultyChip, ModeToken, TimeChip } from "./Chips";
 import { Button } from "@/components/ui/Button";
+import { LessonView } from "@/components/learn/LessonView";
 import styles from "./topicflow.module.css";
 
 const MIDDLE_STAGES: Stage[] = STAGE_ORDER.filter(
@@ -18,9 +20,22 @@ interface TopicUnitFlowProps {
   topic: Topic;
   progress: UserProgress;
   focusUnitId?: string;
+  /** Lazily-loaded lesson content keyed by unit id (undefined while loading). */
+  contentByUnit?: TopicContent;
+  /** True while a content-bearing topic's module is still loading. */
+  contentPending?: boolean;
+  /** True if the topic's content module failed to load. */
+  contentError?: boolean;
 }
 
-export function TopicUnitFlow({ topic, progress, focusUnitId }: TopicUnitFlowProps) {
+export function TopicUnitFlow({
+  topic,
+  progress,
+  focusUnitId,
+  contentByUnit,
+  contentPending = false,
+  contentError = false,
+}: TopicUnitFlowProps) {
   const startUnit = useProgressStore((s) => s.startUnit);
   const completeUnit = useProgressStore((s) => s.completeUnit);
   const uncompleteUnit = useProgressStore((s) => s.uncompleteUnit);
@@ -123,6 +138,12 @@ export function TopicUnitFlow({ topic, progress, focusUnitId }: TopicUnitFlowPro
       <p className="sr-only" role="status" aria-live="polite">
         {announce}
       </p>
+      {contentError && (
+        <p className={styles.contentError} role="status">
+          Lesson content couldn&apos;t be loaded right now — showing the summary below. Try
+          refreshing.
+        </p>
+      )}
       {activeStages.map((stage) => {
         const stageUnits = unitsByStage.get(stage) ?? [];
         const meta = STAGE_META[stage];
@@ -174,6 +195,8 @@ export function TopicUnitFlow({ topic, progress, focusUnitId }: TopicUnitFlowPro
                     isCurrent={currentUnit?.id === unit.id}
                     isOpen={openUnits.has(unit.id)}
                     justCompleted={flashIds.has(unit.id)}
+                    content={contentByUnit?.[unit.id]}
+                    contentPending={contentPending}
                     onToggle={() => toggleUnit(unit.id)}
                     onStart={() => startUnit(unit.id)}
                     onComplete={() => completeUnit(unit.id)}
@@ -225,6 +248,8 @@ interface UnitRowProps {
   isCurrent: boolean;
   isOpen: boolean;
   justCompleted: boolean;
+  content?: ContentBlock[];
+  contentPending?: boolean;
   onToggle: () => void;
   onStart: () => void;
   onComplete: () => void;
@@ -237,6 +262,8 @@ function UnitRow({
   isCurrent,
   isOpen,
   justCompleted,
+  content,
+  contentPending = false,
   onToggle,
   onStart,
   onComplete,
@@ -315,10 +342,18 @@ function UnitRow({
       {isOpen && (
         <div id={detailId} className={styles.unitDetail}>
           <p className={styles.unitDesc}>{unit.description}</p>
-          <div className={styles.unitBlock}>
-            <span className="overline">Instructions · {modeLabel}</span>
-            <p>{unit.instructions}</p>
-          </div>
+          {content && content.length > 0 ? (
+            <LessonView blocks={content} />
+          ) : contentPending ? (
+            <p className={styles.lessonLoading} role="status">
+              Loading lesson…
+            </p>
+          ) : (
+            <div className={styles.unitBlock}>
+              <span className="overline">Instructions · {modeLabel}</span>
+              <p>{unit.instructions}</p>
+            </div>
+          )}
           <div className={styles.unitBlock}>
             <span className="overline">Completion criteria</span>
             <p>{unit.completionCriteria}</p>

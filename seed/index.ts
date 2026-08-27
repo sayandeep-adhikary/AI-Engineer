@@ -13,6 +13,9 @@ import { resources } from "./resources";
 export * from "./types";
 
 export const topics: Topic[] = [...topicsPartA, ...topicsPartB];
+
+// Base curriculum carries METADATA only. Rich lesson content is loaded lazily,
+// per topic, via seed/content/registry.ts — never bundled into the main app.
 export const units: LearningUnit[] = [...unitsPartA, ...unitsPartB, ...unitsPartC];
 
 export { categories, projects, milestones, skills, resources };
