@@ -60,7 +60,6 @@
 .optional {
   border-style: dashed;
   border-color: var(--border-subtle);
-  margin-top: var(--space-4);
 }
 /* "You are here" position is shown via the tag + accent number only, so it never
    competes with the selected/expanded card's active treatment. */
