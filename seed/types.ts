@@ -280,6 +280,66 @@ export interface Project {
   categoryId: string; // owning/anchor category
 }
 
+/** A phase in a project's implementation roadmap. */
+export interface GuidePhase {
+  name: string;
+  intro?: string;
+  tasks: string[];
+}
+
+/** One row of the recommended technology stack. */
+export interface GuideTech {
+  layer: string;
+  choice: string;
+  why: string;
+}
+
+/** An engineering decision the learner must actively make. */
+export interface GuideDecision {
+  decision: string;
+  options: string;
+  tradeoff: string;
+}
+
+/** How to test the project across functional, edge, failure and AI-eval axes. */
+export interface GuideTesting {
+  functional: string[];
+  edgeCases: string[];
+  failureModes: string[];
+  aiEvaluation?: string[];
+}
+
+/**
+ * A comprehensive, professional project brief for one Project (P1..P7).
+ * Additive + lazy-loaded (like topic lesson content) — NOT part of the eager
+ * curriculum bundle. Field names deliberately avoid the seed content-validator's
+ * reserved keys and use no `type` discriminator.
+ */
+export interface ProjectGuide {
+  overview: string; // markdown
+  scenario: string; // markdown
+  whatYouBuild: string; // markdown intro
+  architecture: string; // ascii diagram (rendered in a <pre>)
+  components: string[];
+  learningObjectives: string[];
+  prerequisites: { required: string[]; helpful: string[] };
+  techStack: GuideTech[];
+  functionalRequirements: string[];
+  nonFunctionalRequirements: string[];
+  phases: GuidePhase[];
+  checklist: string[];
+  projectStructure: string; // folder tree (rendered in a <pre>)
+  decisions: GuideDecision[];
+  gotchas: string[];
+  testing: GuideTesting;
+  definitionOfDone: string[];
+  expectedOutcome: string; // markdown
+  outcomeArtifacts: string[];
+  stretchGoals: string[];
+  skillsDemonstrated: string[];
+  portfolio: string; // markdown
+}
+
 /** The complete curriculum dataset shape (definition only, no user state). */
 export interface CurriculumDataset {
   categories: Category[];

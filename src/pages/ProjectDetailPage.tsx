@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { categoryById, projectById } from "@/data/curriculum";
 import { useProgressStore } from "@/state/progressStore";
 import {
@@ -17,6 +18,8 @@ import { TimeChip, TrackChip } from "@/components/domain/Chips";
 import { ProjectStatusPill } from "@/components/domain/ProjectCard";
 import { MilestoneList } from "@/components/domain/MilestoneList";
 import { ProjectContextRail } from "@/components/domain/ProjectContextRail";
+import { ProjectGuideView } from "@/components/domain/ProjectGuide";
+import { loadProjectGuide, type ProjectGuide } from "@/data/projectGuide";
 import { NotFoundPage } from "./NotFoundPage";
 import styles from "./projectdetail.module.css";
 
@@ -25,6 +28,23 @@ export function ProjectDetailPage() {
   const progress = useProgressStore();
   const completeMilestone = useProgressStore((s) => s.completeMilestone);
   const project = projectById.get(projectId);
+
+  // Rich project guide is lazy-loaded (its own chunk), keyed on the project id.
+  const [guide, setGuide] = useState<ProjectGuide | undefined>(undefined);
+  const [guidePending, setGuidePending] = useState(true);
+  useEffect(() => {
+    let cancelled = false;
+    setGuide(undefined);
+    setGuidePending(true);
+    loadProjectGuide(projectId).then((res) => {
+      if (cancelled) return;
+      setGuide(res.status === "ok" ? res.guide : undefined);
+      setGuidePending(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
 
   if (!project) return <NotFoundPage />;
 
@@ -89,28 +109,40 @@ export function ProjectDetailPage() {
             <MilestoneList project={project} progress={progress} />
           </Panel>
 
-          {project.expectedDeliverables.length > 0 && (
-            <Panel overline="Expected deliverables" title="What you'll produce">
-              <ul className={styles.deliverables}>
-                {project.expectedDeliverables.map((d, i) => (
-                  <li key={i}>{d}</li>
-                ))}
-              </ul>
+          {guide ? (
+            <ProjectGuideView guide={guide} />
+          ) : guidePending ? (
+            <Panel overline="Project guide" title="Loading…">
+              <p className="caption text-muted" role="status">
+                Loading the full project brief…
+              </p>
             </Panel>
-          )}
+          ) : (
+            <>
+              {project.expectedDeliverables.length > 0 && (
+                <Panel overline="Expected deliverables" title="What you'll produce">
+                  <ul className={styles.deliverables}>
+                    {project.expectedDeliverables.map((d, i) => (
+                      <li key={i}>{d}</li>
+                    ))}
+                  </ul>
+                </Panel>
+              )}
 
-          <Panel overline="Screenshots" title="Evidence">
-            <EmptyState
-              title="No screenshots yet"
-              description="Capture evidence of your build when you ship this project."
-              icon={<span style={{ fontSize: "1.25rem", color: "var(--text-faint)" }}>▤</span>}
-            />
-          </Panel>
+              <Panel overline="Screenshots" title="Evidence">
+                <EmptyState
+                  title="No screenshots yet"
+                  description="Capture evidence of your build when you ship this project."
+                  icon={<span style={{ fontSize: "1.25rem", color: "var(--text-faint)" }}>▤</span>}
+                />
+              </Panel>
 
-          {project.portfolioValue && (
-            <Panel overline="Portfolio value" title="What makes it portfolio-worthy">
-              <p className="text-secondary">{project.portfolioValue}</p>
-            </Panel>
+              {project.portfolioValue && (
+                <Panel overline="Portfolio value" title="What makes it portfolio-worthy">
+                  <p className="text-secondary">{project.portfolioValue}</p>
+                </Panel>
+              )}
+            </>
           )}
         </main>
 
